@@ -1,0 +1,13 @@
+@model KitapMVC.Controllers.AdminFavorilerController.FavoriViewModel
+@{
+    ViewData["Title"] = "Favori Detay";
+    Layout = "../Shared/_Layout.cshtml";
+}
+<h2>Favori Detay</h2>
+<dl class="row">
+    <dt class="col-sm-2">Kullanıcı</dt>
+    <dd class="col-sm-10">@Model.KullaniciAd</dd>
+    <dt class="col-sm-2">Kitap</dt>
+    <dd class="col-sm-10">@Model.KitapAd</dd>
+</dl>
+<a asp-action="Index" class="btn btn-secondary">Geri</a> 

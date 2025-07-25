@@ -1,0 +1,20 @@
+@model KitapMVC.Controllers.AdminSiparislerController.SiparisViewModel
+@{
+    ViewData["Title"] = "Sipariş Sil";
+    Layout = "../Shared/_Layout.cshtml";
+}
+<h2>Sipariş Sil</h2>
+<div class="alert alert-danger">Bu siparişi silmek istediğinize emin misiniz?</div>
+<dl class="row">
+    <dt class="col-sm-2">Kullanıcı</dt>
+    <dd class="col-sm-10">@Model.KullaniciAd</dd>
+    <dt class="col-sm-2">Sipariş Tarihi</dt>
+    <dd class="col-sm-10">@Model.SiparisTarihi</dd>
+    <dt class="col-sm-2">Toplam Tutar</dt>
+    <dd class="col-sm-10">@Model.ToplamTutar.ToString("C")</dd>
+</dl>
+<form asp-action="Delete" method="post">
+    <input type="hidden" asp-for="Id" />
+    <button type="submit" class="btn btn-danger">Sil</button>
+    <a asp-action="Index" class="btn btn-secondary">İptal</a>
+</form> 

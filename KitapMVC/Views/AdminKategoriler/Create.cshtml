@@ -1,0 +1,20 @@
+@model KitapMVC.Controllers.AdminKategorilerController.KategoriViewModel
+@{
+    ViewData["Title"] = "Yeni Kategori Ekle";
+    Layout = "../Shared/_Layout.cshtml";
+}
+<h2>Yeni Kategori Ekle</h2>
+<form asp-action="Create" method="post">
+    <div class="mb-3">
+        <label asp-for="Ad" class="form-label"></label>
+        <input asp-for="Ad" class="form-control" />
+        <span asp-validation-for="Ad" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="Aciklama" class="form-label"></label>
+        <input asp-for="Aciklama" class="form-control" />
+        <span asp-validation-for="Aciklama" class="text-danger"></span>
+    </div>
+    <button type="submit" class="btn btn-success">Kaydet</button>
+    <a asp-action="Index" class="btn btn-secondary">İptal</a>
+</form> 

@@ -1,0 +1,12 @@
+{
+  "Version": 1,
+  "Hash": "N3NjpNWQMo8jlC4eMZzTpNGVnU9X5PjDECEiJoLCBWQ=",
+  "Source": "KitapApi",
+  "BasePath": "_content/KitapApi",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": [],
+  "Endpoints": []
+}

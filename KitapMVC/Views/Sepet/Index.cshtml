@@ -1,0 +1,67 @@
+﻿@model List<KitapApi.Entities.SepetItem>
+@{
+    ViewData["Title"] = "Sepetim";
+    decimal toplamSepetTutari = Model.Sum(item => item.ToplamFiyat);
+}
+
+<div class="container mt-5">
+    <h1 class="mb-4">@ViewData["Title"]</h1>
+
+    @if (Model == null || !Model.Any())
+    {
+        <div class="alert alert-info" role="alert">
+            Sepetinizde hiç ürün bulunmamaktadır. <a asp-controller="Kitaplar" asp-action="Index" class="alert-link">Kitaplara göz atın!</a>
+        </div>
+    }
+    else
+    {
+        <table class="table table-bordered table-hover">
+            <thead class="table-dark">
+                <tr>
+                    <th>Resim</th>
+                    <th>Kitap Adı</th>
+                    <th>Fiyat</th>
+                    <th>Adet</th>
+                    <th>Toplam</th>
+                    <th>İşlemler</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td class="align-middle" style="width: 100px;">
+                            <img src="@(item.ResimUrl ?? "https://via.placeholder.com/100x150")" alt="@item.KitapAd" class="img-fluid rounded" style="max-height: 100px;">
+                        </td>
+                        <td class="align-middle">@item.KitapAd</td>
+                        <td class="align-middle">@item.Fiyat.ToString("c")</td>
+                        <td class="align-middle">
+                            <form asp-controller="Sepet" asp-action="AdetGuncelle" method="post" class="d-flex align-items-center">
+                                <input type="hidden" name="kitapId" value="@item.KitapId" />
+                                <input type="number" name="adet" value="@item.Adet" min="1" class="form-control form-control-sm text-center" style="width: 70px;" onchange="this.form.submit()" />
+                            </form>
+                        </td>
+                        <td class="align-middle">@item.ToplamFiyat.ToString("c")</td>
+                        <td class="align-middle">
+                            <form asp-controller="Sepet" asp-action="SepettenSil" method="post" onsubmit="return confirm('Bu ürünü sepetten kaldırmak istediğinizden emin misiniz?');">
+                                <input type="hidden" name="kitapId" value="@item.KitapId" />
+                                <button type="submit" class="btn btn-danger btn-sm">Sil</button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="4" class="text-end fw-bold">Genel Toplam:</td>
+                    <td colspan="2" class="fw-bold">@toplamSepetTutari.ToString("c")</td>
+                </tr>
+            </tfoot>
+        </table>
+
+        <div class="d-flex justify-content-between mt-4">
+            <a asp-controller="Kitaplar" asp-action="Index" class="btn btn-outline-secondary">Alışverişe Devam Et</a>
+            <a asp-controller="Sepet" asp-action="SiparisiTamamla" class="btn btn-success">Siparişi Tamamla</a>
+        </div>
+    }
+</div>

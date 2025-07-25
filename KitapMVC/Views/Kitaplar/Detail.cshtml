@@ -1,0 +1,43 @@
+﻿@model KitapApi.Entities.Kitap
+@{
+    // Ödevde istenen ViewData kullanımı için örnek
+    ViewData["Title"] = Model.Ad;
+}
+
+<h1>@ViewBag.SayfaBasligi</h1>
+
+<div>
+    <h4>@Model.Ad</h4>
+    <hr />
+    <div class="row">
+        <div class="col-md-4">
+            <img src="@(Model.ResimUrl ?? "https://via.placeholder.com/400x600")" class="img-fluid rounded" alt="@Model.Ad">
+        </div>
+        <div class="col-md-8">
+            <dl class="row">
+                <dt class="col-sm-3">Yazar</dt>
+                <dd class="col-sm-9">@Model.Yazar</dd>
+
+                <dt class="col-sm-3">Kategori</dt>
+                <dd class="col-sm-9">@Model.Kategori?.Ad</dd>
+
+                <dt class="col-sm-3">Fiyat</dt>
+                <dd class="col-sm-9">@Model.Fiyat.ToString("c")</dd>
+
+                <dt class="col-sm-3">Açıklama</dt>
+                <dd class="col-sm-9">@Model.Aciklama</dd>
+            </dl>
+            <div class="mt-3">
+                <form asp-controller="Sepet" asp-action="SepeteEkle" method="post" class="d-inline">
+                    <input type="hidden" name="kitapId" value="@Model.Id" />
+                    <input type="hidden" name="adet" value="1" />
+                    <button type="submit" class="btn btn-success">Sepete Ekle</button>
+                </form>
+                <a href="#" class="btn btn-warning">Favorilere Ekle</a>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="mt-4">
+    <a asp-action="Index" class="btn btn-outline-secondary">Listeye Geri Dön</a>
+</div>

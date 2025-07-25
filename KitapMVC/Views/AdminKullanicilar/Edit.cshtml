@@ -1,0 +1,29 @@
+@model KitapMVC.Controllers.AdminKullanicilarController.KullaniciViewModel
+@{
+    ViewData["Title"] = "Kullanıcı Düzenle";
+    Layout = "../Shared/_Layout.cshtml";
+}
+<h2>Kullanıcı Düzenle</h2>
+<form asp-action="Edit" method="post">
+    <input type="hidden" asp-for="Id" />
+    <div class="mb-3">
+        <label asp-for="AdSoyad" class="form-label"></label>
+        <input asp-for="AdSoyad" class="form-control" />
+        <span asp-validation-for="AdSoyad" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="Email" class="form-label"></label>
+        <input asp-for="Email" class="form-control" />
+        <span asp-validation-for="Email" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="Rol" class="form-label">Rol</label>
+        <select asp-for="Rol" class="form-select">
+            <option value="User">User</option>
+            <option value="Admin">Admin</option>
+        </select>
+        <span asp-validation-for="Rol" class="text-danger"></span>
+    </div>
+    <button type="submit" class="btn btn-success">Kaydet</button>
+    <a asp-action="Index" class="btn btn-secondary">İptal</a>
+</form> 

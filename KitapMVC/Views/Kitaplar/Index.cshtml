@@ -1,0 +1,64 @@
+﻿@model List<KitapApi.Entities.Kitap>
+@{
+    ViewData["Title"] = "Kitaplar";
+}
+
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger">@TempData["ErrorMessage"]</div>
+}
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success">@TempData["SuccessMessage"]</div>
+}
+@if (ViewData["Aciklama"] != null)
+{
+    <div class="alert alert-info">@ViewData["Aciklama"]</div>
+}
+
+<div class="container">
+    <h1 class="my-4">@ViewData["Title"]</h1>
+
+    <div class="row">
+        @if (Model != null && Model.Any())
+        {
+            @foreach (var kitap in Model)
+            {
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="card h-100">
+                        <a href="#">
+                            <img class="card-img-top" src="@(kitap.ResimUrl ?? "https://via.placeholder.com/700x400")" alt="@kitap.Ad">
+                        </a>
+                        <div class="card-body">
+                            <h4 class="card-title">
+                                <a href="#">@kitap.Ad</a>
+                            </h4>
+                            <h5>@kitap.Fiyat.ToString("c")</h5>
+                            <p class="card-text">Yazar: @kitap.Yazar</p>
+                            <p class="card-text"><small class="text-muted">Kategori: @kitap.Kategori?.Ad</small></p>
+                        </div>
+                        <div class="card-footer text-center">
+                            <form asp-controller="Sepet" asp-action="SepeteEkle" method="post" class="d-inline">
+                                <input type="hidden" name="kitapId" value="@kitap.Id" />
+                                <input type="hidden" name="adet" value="1" />
+                                <button type="submit" class="btn btn-primary">Sepete Ekle</button>
+                            </form>
+                            <form asp-controller="Favoriler" asp-action="Ekle" method="post" class="d-inline">
+                                <input type="hidden" name="kitapId" value="@kitap.Id" />
+                                <input type="hidden" name="kullaniciId" value="@(ViewBag.KullaniciId ?? 0)" />
+                                <button type="submit" class="btn btn-warning" @(ViewBag.KullaniciId == null ? "disabled" : "")>Favorilere Ekle</button>
+                            </form>
+                            <a asp-controller="Kitaplar" asp-action="Detail" asp-route-id="@kitap.Id" class="btn btn-secondary">Detaylar</a>
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+        else
+        {
+            <div class="col-12">
+                <p>Gösterilecek kitap bulunamadı.</p>
+            </div>
+        }
+    </div>
+</div>

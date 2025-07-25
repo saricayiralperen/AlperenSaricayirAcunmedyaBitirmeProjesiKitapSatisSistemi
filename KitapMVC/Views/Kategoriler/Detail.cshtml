@@ -1,0 +1,23 @@
+﻿@model KitapApi.Entities.Kategori
+@{
+    ViewData["Title"] = Model.Ad;
+}
+
+<div class="container mt-5">
+    <h1 class="mb-4">@ViewBag.SayfaBasligi: @Model.Ad</h1>
+    <hr />
+    <div class="row">
+        <div class="col-md-8">
+            <dl class="row">
+                <dt class="col-sm-3">Kategori Adı:</dt>
+                <dd class="col-sm-9">@Model.Ad</dd>
+
+                <dt class="col-sm-3">Açıklama:</dt>
+                <dd class="col-sm-9">@(string.IsNullOrEmpty(Model.Aciklama) ? "Açıklama bulunmamaktadır." : Model.Aciklama)</dd>
+            </dl>
+        </div>
+    </div>
+    <div class="mt-4">
+        <a asp-action="Index" class="btn btn-outline-secondary">Listeye Geri Dön</a>
+    </div>
+</div>

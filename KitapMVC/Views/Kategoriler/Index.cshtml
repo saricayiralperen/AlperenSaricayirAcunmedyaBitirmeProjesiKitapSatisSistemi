@@ -1,0 +1,24 @@
+﻿@model List<KitapApi.Entities.Kategori>
+@{
+    ViewData["Title"] = "Kategoriler";
+}
+
+<div class="container">
+    <h1 class="my-4">@ViewData["Title"]</h1>
+
+    @if (Model != null && Model.Any())
+    {
+        <div class="list-group">
+            @foreach (var kategori in Model)
+            {
+                <a href="#" class="list-group-item list-group-item-action">
+                    @kategori.Ad
+                </a>
+            }
+        </div>
+    }
+    else
+    {
+        <p>Gösterilecek kategori bulunamadı.</p>
+    }
+</div>

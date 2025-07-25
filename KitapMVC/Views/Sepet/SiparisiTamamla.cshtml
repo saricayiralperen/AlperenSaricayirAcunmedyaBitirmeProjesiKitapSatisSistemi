@@ -1,0 +1,48 @@
+@model List<KitapApi.Entities.SepetItem>
+@{
+    ViewData["Title"] = "Siparişi Tamamla";
+    decimal toplamSepetTutari = Model.Sum(item => item.ToplamFiyat);
+}
+<div class="container mt-5">
+    <h1 class="mb-4">Siparişi Tamamla</h1>
+    <form asp-action="SiparisiTamamlaOnay" method="post">
+        <div class="mb-3">
+            <label for="adSoyad" class="form-label">Ad Soyad</label>
+            <input type="text" class="form-control" id="adSoyad" name="adSoyad" required />
+        </div>
+        <div class="mb-3">
+            <label for="email" class="form-label">E-posta</label>
+            <input type="email" class="form-control" id="email" name="email" required />
+        </div>
+        <h4>Sepet Özeti</h4>
+        <table class="table table-bordered table-hover">
+            <thead class="table-dark">
+                <tr>
+                    <th>Kitap</th>
+                    <th>Adet</th>
+                    <th>Fiyat</th>
+                    <th>Toplam</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.KitapAd</td>
+                        <td>@item.Adet</td>
+                        <td>@item.Fiyat.ToString("c")</td>
+                        <td>@item.ToplamFiyat.ToString("c")</td>
+                    </tr>
+                }
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="3" class="text-end fw-bold">Genel Toplam:</td>
+                    <td class="fw-bold">@toplamSepetTutari.ToString("c")</td>
+                </tr>
+            </tfoot>
+        </table>
+        <button type="submit" class="btn btn-success">Siparişi Onayla</button>
+        <a asp-action="Index" class="btn btn-secondary">Geri</a>
+    </form>
+</div> 

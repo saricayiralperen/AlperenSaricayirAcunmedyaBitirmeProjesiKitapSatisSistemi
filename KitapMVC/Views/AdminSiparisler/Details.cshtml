@@ -1,0 +1,35 @@
+@model KitapMVC.Controllers.AdminSiparislerController.SiparisViewModel
+@{
+    ViewData["Title"] = "Sipariş Detay";
+    Layout = "../Shared/_Layout.cshtml";
+}
+<h2>Sipariş Detay</h2>
+<dl class="row">
+    <dt class="col-sm-2">Kullanıcı</dt>
+    <dd class="col-sm-10">@Model.KullaniciAd</dd>
+    <dt class="col-sm-2">Sipariş Tarihi</dt>
+    <dd class="col-sm-10">@Model.SiparisTarihi</dd>
+    <dt class="col-sm-2">Toplam Tutar</dt>
+    <dd class="col-sm-10">@Model.ToplamTutar.ToString("C")</dd>
+</dl>
+<h4>Ürünler</h4>
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Kitap</th>
+            <th>Adet</th>
+            <th>Fiyat</th>
+        </tr>
+    </thead>
+    <tbody>
+    @foreach (var detay in Model.SiparisDetaylari)
+    {
+        <tr>
+            <td>@detay.KitapAd</td>
+            <td>@detay.Adet</td>
+            <td>@detay.Fiyat.ToString("C")</td>
+        </tr>
+    }
+    </tbody>
+</table>
+<a asp-action="Index" class="btn btn-secondary">Geri</a> 

@@ -1,0 +1,43 @@
+@model KitapMVC.Controllers.AdminKitaplarController.KitapViewModel
+@{
+    ViewData["Title"] = "Kitap Düzenle";
+    Layout = "../Shared/_Layout.cshtml";
+}
+<h2>Kitap Düzenle</h2>
+<form asp-action="Edit" method="post" enctype="multipart/form-data">
+    <input type="hidden" asp-for="Id" />
+    <div class="mb-3">
+        <label asp-for="Ad" class="form-label"></label>
+        <input asp-for="Ad" class="form-control" />
+        <span asp-validation-for="Ad" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="Yazar" class="form-label"></label>
+        <input asp-for="Yazar" class="form-control" />
+        <span asp-validation-for="Yazar" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="Fiyat" class="form-label"></label>
+        <input asp-for="Fiyat" class="form-control" />
+        <span asp-validation-for="Fiyat" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="KategoriId" class="form-label">Kategori</label>
+        <select asp-for="KategoriId" class="form-select">
+            <option value="">Seçiniz</option>
+            <!-- Kategoriler burada dinamik olarak doldurulacak -->
+        </select>
+        <span asp-validation-for="KategoriId" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="Aciklama" class="form-label"></label>
+        <input asp-for="Aciklama" class="form-control" />
+        <span asp-validation-for="Aciklama" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Kitap Resmi</label>
+        <input type="file" name="ResimDosyasi" class="form-control" />
+    </div>
+    <button type="submit" class="btn btn-success">Kaydet</button>
+    <a asp-action="Index" class="btn btn-secondary">İptal</a>
+</form> 
