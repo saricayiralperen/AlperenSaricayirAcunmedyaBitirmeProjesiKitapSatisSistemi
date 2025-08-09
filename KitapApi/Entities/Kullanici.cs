@@ -1,4 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema; // ColumnType için, şuanlık olmasa da dursun
 
 namespace KitapApi.Entities
@@ -14,10 +14,12 @@ namespace KitapApi.Entities
 
         [Required]
         [StringLength(100)]
+        [EmailAddress(ErrorMessage = "Geçerli bir email adresi giriniz.")]
         public string Email { get; set; } = string.Empty; // <-- Eposta yerine Email kullanıyoruz
 
         [Required]
         [StringLength(255)] // Şifre hash'i için daha uzun olabilir
+        [MinLength(6, ErrorMessage = "Şifre en az 6 karakter olmalıdır.")]
         public string SifreHash { get; set; } = string.Empty; // <-- Sifre yerine SifreHash kullanıyoruz
 
         [Required]

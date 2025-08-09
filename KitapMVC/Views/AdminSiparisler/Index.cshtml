@@ -1,4 +1,4 @@
-@model IEnumerable<KitapMVC.Controllers.AdminSiparislerController.SiparisViewModel>
+@model IEnumerable<KitapMVC.Models.SiparisViewModel>
 @{
     ViewData["Title"] = "Siparişler";
     Layout = "../Shared/_Layout.cshtml";
@@ -9,8 +9,10 @@
         <tr>
             <th>Id</th>
             <th>Kullanıcı</th>
+            <th>E-posta</th>
             <th>Sipariş Tarihi</th>
             <th>Toplam Tutar</th>
+            <th>Durum</th>
             <th>İşlemler</th>
         </tr>
     </thead>
@@ -20,13 +22,35 @@
         <tr>
             <td>@item.Id</td>
             <td>@item.KullaniciAd</td>
+            <td>@item.KullaniciEmail</td>
             <td>@item.SiparisTarihi</td>
             <td>@item.ToplamTutar.ToString("C")</td>
             <td>
+                @if (item.Durum == "Beklemede")
+                {
+                    <span class="badge bg-warning text-dark">@item.Durum</span>
+                }
+                else if (item.Durum == "Onaylandı")
+                {
+                    <span class="badge bg-success">@item.Durum</span>
+                }
+                else
+                {
+                    <span class="badge bg-danger">@item.Durum</span>
+                }
+            </td>
+            <td>
                 <a class="btn btn-info btn-sm" asp-action="Details" asp-route-id="@item.Id">Detay</a>
+                @if (item.Durum == "Beklemede")
+                {
+                    <form asp-action="Onayla" asp-route-id="@item.Id" method="post" style="display:inline;">
+                        @Html.AntiForgeryToken()
+                        <button type="submit" class="btn btn-success btn-sm" onclick="return confirm('Bu siparişi onaylamak istediğinizden emin misiniz?')">Onayla</button>
+                    </form>
+                }
                 <a class="btn btn-danger btn-sm" asp-action="Delete" asp-route-id="@item.Id">Sil</a>
             </td>
         </tr>
     }
     </tbody>
-</table> 
+</table>

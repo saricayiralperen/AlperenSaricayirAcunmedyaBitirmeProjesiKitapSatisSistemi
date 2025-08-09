@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using KitapApi.Data;
 using KitapApi.Entities;
+using Microsoft.AspNetCore.Authorization;
 
 namespace KitapApi.Controllers
 {
@@ -47,9 +48,35 @@ namespace KitapApi.Controllers
         [HttpPost]
         public async Task<ActionResult<Favori>> CreateFavori(Favori favori)
         {
+            // Validation için navigation property'leri kontrol et
+            if (favori.KitapId <= 0 || favori.KullaniciId <= 0)
+            {
+                return BadRequest("KitapId ve KullaniciId gereklidir.");
+            }
+            
+            // Navigation property'leri null olarak ayarla çünkü sadece ID'ler gerekli
+            favori.Kullanici = null;
+            favori.Kitap = null;
+            
+            // Aynı kullanıcı ve kitap için favori var mı kontrol et
+            var existingFavori = await _context.Favoriler
+                .FirstOrDefaultAsync(f => f.KitapId == favori.KitapId && f.KullaniciId == favori.KullaniciId);
+            
+            if (existingFavori != null)
+            {
+                return BadRequest("Bu kitap zaten favorilerinizde.");
+            }
+            
             _context.Favoriler.Add(favori);
             await _context.SaveChangesAsync();
-            return CreatedAtAction(nameof(GetFavori), new { id = favori.Id }, favori);
+            
+            // Oluşturulan favoriyi navigation property'leri ile birlikte döndür
+            var createdFavori = await _context.Favoriler
+                .Include(f => f.Kullanici)
+                .Include(f => f.Kitap)
+                .FirstOrDefaultAsync(f => f.Id == favori.Id);
+                
+            return CreatedAtAction(nameof(GetFavori), new { id = favori.Id }, createdFavori);
         }
 
         // PUT: api/Favori/5
@@ -103,4 +130,4 @@ namespace KitapApi.Controllers
             return _context.Favoriler.Any(e => e.Id == id);
         }
     }
-} 
+}

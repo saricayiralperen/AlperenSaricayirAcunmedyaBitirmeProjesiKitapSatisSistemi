@@ -1,28 +1,79 @@
-@model KitapMVC.Controllers.AdminKullanicilarController.KullaniciViewModel
+@model KitapMVC.Models.KullaniciViewModel
+
 @{
     ViewData["Title"] = "Yeni Kullanıcı Ekle";
-    Layout = "../Shared/_Layout.cshtml";
+    Layout = "../Shared/_AdminLayout.cshtml";
 }
-<h2>Yeni Kullanıcı Ekle</h2>
-<form asp-action="Create" method="post">
-    <div class="mb-3">
-        <label asp-for="AdSoyad" class="form-label"></label>
-        <input asp-for="AdSoyad" class="form-control" />
-        <span asp-validation-for="AdSoyad" class="text-danger"></span>
+
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h1 class="h2"><i class="bi bi-person-plus"></i> Yeni Kullanıcı Ekle</h1>
+    <div class="btn-toolbar mb-2 mb-md-0">
+        <a asp-action="Index" class="btn btn-sm btn-outline-primary">
+            <i class="bi bi-arrow-left"></i> Kullanıcı Listesi
+        </a>
     </div>
-    <div class="mb-3">
-        <label asp-for="Email" class="form-label"></label>
-        <input asp-for="Email" class="form-control" />
-        <span asp-validation-for="Email" class="text-danger"></span>
+</div>
+
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        @TempData["ErrorMessage"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
-    <div class="mb-3">
-        <label asp-for="Rol" class="form-label">Rol</label>
-        <select asp-for="Rol" class="form-select">
-            <option value="User">User</option>
-            <option value="Admin">Admin</option>
-        </select>
-        <span asp-validation-for="Rol" class="text-danger"></span>
+}
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        @TempData["SuccessMessage"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
-    <button type="submit" class="btn btn-success">Kaydet</button>
-    <a asp-action="Index" class="btn btn-secondary">İptal</a>
-</form> 
+}
+
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="card-title mb-0"><i class="bi bi-person-lines-fill"></i> Kullanıcı Bilgileri</h5>
+            </div>
+            <div class="card-body">
+                <form asp-action="Create" method="post">
+                    <div class="mb-3">
+                        <label asp-for="AdSoyad" class="form-label"></label>
+                        <input asp-for="AdSoyad" class="form-control" placeholder="Kullanıcının ad ve soyadını girin" />
+                        <span asp-validation-for="AdSoyad" class="text-danger"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="Email" class="form-label"></label>
+                        <input asp-for="Email" class="form-control" placeholder="E-posta adresini girin" />
+                        <span asp-validation-for="Email" class="text-danger"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="Sifre" class="form-label">Şifre</label>
+                        <input asp-for="Sifre" type="password" class="form-control" placeholder="En az 6 karakter" />
+                        <span asp-validation-for="Sifre" class="text-danger"></span>
+                        <div class="form-text">Şifre en az 6 karakter olmalıdır.</div>
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="Rol" class="form-label">Rol</label>
+                        <select asp-for="Rol" class="form-select">
+                            <option value="">Rol seçiniz</option>
+                            <option value="User">User (Normal Kullanıcı)</option>
+                            <option value="Admin">Admin (Yönetici)</option>
+                        </select>
+                        <span asp-validation-for="Rol" class="text-danger"></span>
+                        <div class="form-text">Admin rolü tüm yönetim paneline erişim sağlar.</div>
+                    </div>
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                        <button type="submit" class="btn btn-success me-md-2">
+                            <i class="bi bi-check-lg"></i> Kullanıcı Ekle
+                        </button>
+                        <a asp-action="Index" class="btn btn-secondary">
+                            <i class="bi bi-x-lg"></i> İptal
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,54 @@
+@model KitapMVC.Models.LoginViewModel
+@{
+    ViewData["Title"] = "Admin Girişi";
+    Layout = "_Layout";
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="text-center">Admin Paneli Girişi</h3>
+                </div>
+                <div class="card-body">
+                    <form asp-action="Login" method="post">
+                        @Html.AntiForgeryToken()
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        
+                        <div class="form-group mb-3">
+                            <label asp-for="Email" class="form-label">E-posta</label>
+                            <input asp-for="Email" class="form-control" placeholder="E-posta adresinizi girin" />
+                            <span asp-validation-for="Email" class="text-danger"></span>
+                        </div>
+                        
+                        <div class="form-group mb-3">
+                            <label asp-for="Sifre" class="form-label">Şifre</label>
+                            <input asp-for="Sifre" type="password" class="form-control" placeholder="Şifrenizi girin" />
+                            <span asp-validation-for="Sifre" class="text-danger"></span>
+                        </div>
+                        
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-primary">Giriş Yap</button>
+                        </div>
+                    </form>
+                </div>
+                <div class="card-footer text-center">
+                    <small class="text-muted">Admin hesabınızla giriş yapın</small>
+                    <hr>
+                    <div class="mt-2">
+                        <small class="text-info"><strong>Geliştiriciler için test bilgileri:</strong></small><br>
+                        <small class="text-muted">
+                            <strong>E-posta:</strong> admin@kitap.com<br>
+                            <strong>Şifre:</strong> admin123
+                        </small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

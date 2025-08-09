@@ -1,8 +1,26 @@
-@model KitapMVC.Controllers.AdminKitaplarController.KitapViewModel
+@model KitapMVC.Models.KitapViewModel
+
 @{
     ViewData["Title"] = "Kitap Düzenle";
     Layout = "../Shared/_Layout.cshtml";
 }
+
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        @TempData["ErrorMessage"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        @TempData["SuccessMessage"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+
 <h2>Kitap Düzenle</h2>
 <form asp-action="Edit" method="post" enctype="multipart/form-data">
     <input type="hidden" asp-for="Id" />
@@ -23,9 +41,8 @@
     </div>
     <div class="mb-3">
         <label asp-for="KategoriId" class="form-label">Kategori</label>
-        <select asp-for="KategoriId" class="form-select">
-            <option value="">Seçiniz</option>
-            <!-- Kategoriler burada dinamik olarak doldurulacak -->
+        <select asp-for="KategoriId" class="form-select" asp-items="ViewBag.Kategoriler">
+            <option value="">Kategori Seçiniz</option>
         </select>
         <span asp-validation-for="KategoriId" class="text-danger"></span>
     </div>
@@ -40,4 +57,4 @@
     </div>
     <button type="submit" class="btn btn-success">Kaydet</button>
     <a asp-action="Index" class="btn btn-secondary">İptal</a>
-</form> 
+</form>

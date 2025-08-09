@@ -1,8 +1,10 @@
-﻿@model KitapApi.Entities.Kitap
+@model KitapMVC.Models.Entities.Kitap
 @{
     // Ödevde istenen ViewData kullanımı için örnek
     ViewData["Title"] = Model.Ad;
 }
+
+
 
 <h1>@ViewBag.SayfaBasligi</h1>
 
@@ -33,7 +35,12 @@
                     <input type="hidden" name="adet" value="1" />
                     <button type="submit" class="btn btn-success">Sepete Ekle</button>
                 </form>
-                <a href="#" class="btn btn-warning">Favorilere Ekle</a>
+                <form asp-controller="Favoriler" asp-action="Ekle" method="post" class="d-inline">
+                    <input type="hidden" name="kitapId" value="@Model.Id" />
+                    <input type="hidden" name="kullaniciId" value="@(ViewBag.KullaniciId ?? 1)" />
+                    <button type="submit" class="btn btn-warning" @(ViewBag.KullaniciId == null ? "disabled" : "")">Favorilere Ekle</button>
+                </form>
+                <a asp-controller="Favoriler" asp-action="Index" asp-route-kullaniciId="@(ViewBag.KullaniciId ?? 1)" class="btn btn-info">Favorilerimi Gör</a>
             </div>
         </div>
     </div>

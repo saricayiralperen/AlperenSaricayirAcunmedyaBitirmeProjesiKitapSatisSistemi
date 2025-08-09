@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\alperen.saricayir\\Downloads\\KitapProjesi-main\\KitapApi\\KitapApi.csproj": {}
+    "C:\\Users\\alperen.saricayir\\Desktop\\alperenSaricayirSonHatasizProjeAcunmedya\\KitapProjesi-main\\KitapApi\\KitapApi.csproj": {}
   },
   "projects": {
-    "C:\\Users\\alperen.saricayir\\Downloads\\KitapProjesi-main\\KitapApi\\KitapApi.csproj": {
+    "C:\\Users\\alperen.saricayir\\Desktop\\alperenSaricayirSonHatasizProjeAcunmedya\\KitapProjesi-main\\KitapApi\\KitapApi.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\alperen.saricayir\\Downloads\\KitapProjesi-main\\KitapApi\\KitapApi.csproj",
+        "projectUniqueName": "C:\\Users\\alperen.saricayir\\Desktop\\alperenSaricayirSonHatasizProjeAcunmedya\\KitapProjesi-main\\KitapApi\\KitapApi.csproj",
         "projectName": "KitapApi",
-        "projectPath": "C:\\Users\\alperen.saricayir\\Downloads\\KitapProjesi-main\\KitapApi\\KitapApi.csproj",
+        "projectPath": "C:\\Users\\alperen.saricayir\\Desktop\\alperenSaricayirSonHatasizProjeAcunmedya\\KitapProjesi-main\\KitapApi\\KitapApi.csproj",
         "packagesPath": "C:\\Users\\alperen.saricayir\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\alperen.saricayir\\Downloads\\KitapProjesi-main\\KitapApi\\obj\\",
+        "outputPath": "C:\\Users\\alperen.saricayir\\Desktop\\alperenSaricayirSonHatasizProjeAcunmedya\\KitapProjesi-main\\KitapApi\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -51,6 +51,14 @@
         "net9.0": {
           "targetAlias": "net9.0",
           "dependencies": {
+            "BCrypt.Net-Next": {
+              "target": "Package",
+              "version": "[4.0.3, )"
+            },
+            "Microsoft.AspNetCore.Authentication.JwtBearer": {
+              "target": "Package",
+              "version": "[9.0.7, )"
+            },
             "Microsoft.AspNetCore.OpenApi": {
               "target": "Package",
               "version": "[9.0.2, )"
@@ -93,7 +101,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.302/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.303/PortableRuntimeIdentifierGraph.json"
         }
       }
     }

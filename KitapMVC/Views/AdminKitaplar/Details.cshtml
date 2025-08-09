@@ -1,4 +1,5 @@
-@model KitapMVC.Controllers.AdminKitaplarController.KitapViewModel
+@model KitapMVC.Models.KitapViewModel
+
 @{
     ViewData["Title"] = "Kitap Detay";
     Layout = "../Shared/_Layout.cshtml";
@@ -28,4 +29,4 @@
     </dd>
 </dl>
 <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">Düzenle</a>
-<a asp-action="Index" class="btn btn-secondary">Geri</a> 
+<a asp-action="Index" class="btn btn-secondary">Geri</a>

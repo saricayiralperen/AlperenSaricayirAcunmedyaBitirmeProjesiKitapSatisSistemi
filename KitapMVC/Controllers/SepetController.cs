@@ -1,5 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using KitapApi.Entities; // SepetItem ve Kitap modelini kullanmak için
+using Microsoft.AspNetCore.Mvc;
+using KitapMVC.Models.Entities; // SepetItem ve Kitap modelini kullanmak için
 using KitapMVC.Services; // KitapApiService kullanmak için
 using System.Text.Json; // Session'a JSON olarak kaydetmek için
 
@@ -90,22 +90,44 @@ namespace KitapMVC.Controllers
         [HttpPost]
         public IActionResult AdetGuncelle(int kitapId, int adet)
         {
+            // Debug için console'a yazdır
+            Console.WriteLine($"AdetGuncelle çağrıldı - KitapId: {kitapId}, Adet: {adet}");
+            
             List<SepetItem> sepet = GetSepetFromSession();
             var guncellenecekItem = sepet.FirstOrDefault(item => item.KitapId == kitapId);
 
             if (guncellenecekItem != null)
             {
-                if (adet <= 0) // Adet 0 veya daha az ise ürünü sepetten sil
+                Console.WriteLine($"Eski adet: {guncellenecekItem.Adet}");
+                
+                // Adet minimum 1 olmalı, 0 veya daha az değer gelirse 1 yap
+                if (adet <= 0)
                 {
-                    sepet.Remove(guncellenecekItem);
-                    TempData["InfoMessage"] = $"{guncellenecekItem.KitapAd} sepetten kaldırıldı (adet 0 olduğu için).";
+                    adet = 1;
                 }
-                else
-                {
-                    guncellenecekItem.Adet = adet;
-                    TempData["SuccessMessage"] = $"{guncellenecekItem.KitapAd} adedi {adet} olarak güncellendi.";
-                }
+                
+                guncellenecekItem.Adet = adet;
+                Console.WriteLine($"Yeni adet: {guncellenecekItem.Adet}");
+                
                 SaveSepetToSession(sepet);
+                
+                // AJAX isteği ise JSON döndür
+                if (Request.Headers["X-Requested-With"] == "XMLHttpRequest")
+                {
+                    return Json(new { success = true, message = $"{guncellenecekItem.KitapAd} adedi {adet} olarak güncellendi.", yeniAdet = adet });
+                }
+                
+                TempData["SuccessMessage"] = $"{guncellenecekItem.KitapAd} adedi {adet} olarak güncellendi.";
+            }
+            else
+            {
+                Console.WriteLine("Güncellenecek item bulunamadı!");
+                
+                // AJAX isteği ise JSON döndür
+                if (Request.Headers["X-Requested-With"] == "XMLHttpRequest")
+                {
+                    return Json(new { success = false, message = "Ürün bulunamadı." });
+                }
             }
             return RedirectToAction("Index"); // Sepetim sayfasına geri yönlendir
         }
@@ -140,7 +162,7 @@ namespace KitapMVC.Controllers
             if (kullanici == null)
             {
                 // Yeni kullanıcı kaydı
-                kullanici = await _kitapApiService.RegisterAsync(new KitapApi.Entities.Kullanici
+                kullanici = await _kitapApiService.RegisterAsync(new KitapMVC.Models.Entities.Kullanici
                 {
                     AdSoyad = adSoyad,
                     Email = email,
@@ -154,12 +176,13 @@ namespace KitapMVC.Controllers
                 return RedirectToAction("Index");
             }
             // Sipariş ve detaylarını hazırla
-            var siparis = new KitapApi.Entities.Siparis
+            var siparis = new KitapMVC.Models.Entities.Siparis
             {
                 KullaniciId = kullanici.Id,
                 SiparisTarihi = DateTime.Now,
                 ToplamTutar = sepet.Sum(x => x.ToplamFiyat),
-                SiparisDetaylari = sepet.Select(item => new KitapApi.Entities.SiparisDetay
+                Durum = "Beklemede",
+                SiparisDetaylari = sepet.Select(item => new KitapMVC.Models.Entities.SiparisDetay
                 {
                     KitapId = item.KitapId,
                     Adet = item.Adet,

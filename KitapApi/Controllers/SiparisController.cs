@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using KitapApi.Data;
@@ -18,44 +19,138 @@ namespace KitapApi.Controllers
 
         // GET: api/Siparis
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Siparis>>> GetSiparisler()
+        public async Task<ActionResult<IEnumerable<object>>> GetSiparisler()
         {
-            return await _context.Siparisler
-                .Include(s => s.Kullanici)
-                .Include(s => s.SiparisDetaylari)
-                    .ThenInclude(sd => sd.Kitap)
-                .ToListAsync();
+            try
+            {
+                var siparisler = await _context.Siparisler
+                    .Include(s => s.Kullanici)
+                    .Include(s => s.SiparisDetaylari)
+                        .ThenInclude(sd => sd.Kitap)
+                    .Select(s => new
+                    {
+                        Id = s.Id,
+                        KullaniciId = s.KullaniciId,
+                        SiparisTarihi = s.SiparisTarihi,
+                        ToplamTutar = s.ToplamTutar,
+                        Durum = s.Durum,
+                        Kullanici = s.Kullanici != null ? new
+                        {
+                            Id = s.Kullanici.Id,
+                            AdSoyad = s.Kullanici.AdSoyad,
+                            Email = s.Kullanici.Email
+                        } : null,
+                        SiparisDetaylari = s.SiparisDetaylari.Select(sd => new
+                        {
+                            Id = sd.Id,
+                            Adet = sd.Adet,
+                            Fiyat = sd.Fiyat,
+                            KitapId = sd.KitapId,
+                            SiparisId = sd.SiparisId,
+                            Kitap = sd.Kitap != null ? new
+                            {
+                                Id = sd.Kitap.Id,
+                                Ad = sd.Kitap.Ad,
+                                Yazar = sd.Kitap.Yazar,
+                                Fiyat = sd.Kitap.Fiyat
+                            } : null
+                        }).ToList()
+                    })
+                    .ToListAsync();
+                return Ok(siparisler);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { error = ex.Message });
+            }
+        }
+
+        // GET: api/Siparis/KitapIstatistikleri
+        [HttpGet("KitapIstatistikleri")]
+        public async Task<ActionResult<IEnumerable<object>>> GetKitapSiparisIstatistikleri()
+        {
+            try
+            {
+                var kitapIstatistikleri = await _context.SiparisDetaylari
+                    .Include(sd => sd.Kitap)
+                    .GroupBy(sd => new { sd.KitapId, sd.Kitap.Ad })
+                    .Select(g => new
+                    {
+                        KitapId = g.Key.KitapId,
+                        KitapAd = g.Key.Ad,
+                        ToplamSiparisSayisi = g.Sum(sd => sd.Adet),
+                        SiparisAdedi = g.Count()
+                    })
+                    .Where(x => x.ToplamSiparisSayisi > 0)
+                    .OrderByDescending(x => x.ToplamSiparisSayisi)
+                    .ToListAsync();
+
+                return Ok(kitapIstatistikleri);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { error = ex.Message });
+            }
         }
 
         // GET: api/Siparis/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Siparis>> GetSiparis(int id)
         {
-            var siparis = await _context.Siparisler
-                .Include(s => s.Kullanici)
-                .Include(s => s.SiparisDetaylari)
-                    .ThenInclude(sd => sd.Kitap)
-                .FirstOrDefaultAsync(s => s.Id == id);
-
-            if (siparis == null)
+            try
             {
-                return NotFound();
-            }
+                var siparis = await _context.Siparisler
+                    .Include(s => s.Kullanici)
+                    .Include(s => s.SiparisDetaylari)
+                        .ThenInclude(sd => sd.Kitap)
+                    .Where(s => s.Id == id)
+                    .FirstOrDefaultAsync();
 
-            return siparis;
+                if (siparis == null)
+                {
+                    return NotFound();
+                }
+
+                return Ok(siparis);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { error = ex.Message });
+            }
         }
 
         // POST: api/Siparis
         [HttpPost]
         public async Task<ActionResult<Siparis>> CreateSiparis(Siparis siparis)
         {
+            // Sipariş detaylarını da kaydet
+            if (siparis.SiparisDetaylari != null && siparis.SiparisDetaylari.Any())
+            {
+                foreach (var detay in siparis.SiparisDetaylari)
+                {
+                    detay.SiparisId = siparis.Id; // Bu otomatik olarak ayarlanacak
+                }
+            }
+            
             _context.Siparisler.Add(siparis);
             await _context.SaveChangesAsync();
-            return CreatedAtAction(nameof(GetSiparis), new { id = siparis.Id }, siparis);
+            
+            // Circular reference'ı önlemek için sadece temel bilgileri döndür
+            var result = new Siparis
+            {
+                Id = siparis.Id,
+                KullaniciId = siparis.KullaniciId,
+                SiparisTarihi = siparis.SiparisTarihi,
+                ToplamTutar = siparis.ToplamTutar,
+                Durum = siparis.Durum
+            };
+            
+            return CreatedAtAction(nameof(GetSiparis), new { id = siparis.Id }, result);
         }
 
         // PUT: api/Siparis/5
         [HttpPut("{id}")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> UpdateSiparis(int id, Siparis siparis)
         {
             if (id != siparis.Id)
@@ -86,6 +181,7 @@ namespace KitapApi.Controllers
 
         // DELETE: api/Siparis/5
         [HttpDelete("{id}")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteSiparis(int id)
         {
             var siparis = await _context.Siparisler.FindAsync(id);
@@ -100,9 +196,42 @@ namespace KitapApi.Controllers
             return NoContent();
         }
 
+        // PUT: api/Siparis/Onayla/5
+        [HttpPut("Onayla/{id}")]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> SiparisOnayla(int id)
+        {
+            var siparis = await _context.Siparisler.FindAsync(id);
+            if (siparis == null)
+            {
+                return NotFound();
+            }
+
+            siparis.Durum = "Onaylandı";
+            _context.Entry(siparis).State = EntityState.Modified;
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!SiparisExists(id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return Ok(new { message = "Sipariş başarıyla onaylandı" });
+        }
+
         private bool SiparisExists(int id)
         {
             return _context.Siparisler.Any(e => e.Id == id);
         }
     }
-} 
+}
