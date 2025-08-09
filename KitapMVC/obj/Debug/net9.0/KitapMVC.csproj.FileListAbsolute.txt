@@ -196,3 +196,4 @@ C:\Users\alperen.saricayir\Desktop\alperenSaricayirSonHatasizProjeAcunmedya\Kita
 C:\Users\alperen.saricayir\Desktop\alperenSaricayirSonHatasizProjeAcunmedya\KitapProjesi-main\KitapMVC\obj\Debug\net9.0\KitapMVC.pdb
 C:\Users\alperen.saricayir\Desktop\alperenSaricayirSonHatasizProjeAcunmedya\KitapProjesi-main\KitapMVC\obj\Debug\net9.0\KitapMVC.genruntimeconfig.cache
 C:\Users\alperen.saricayir\Desktop\alperenSaricayirSonHatasizProjeAcunmedya\KitapProjesi-main\KitapMVC\obj\Debug\net9.0\ref\KitapMVC.dll
+C:\Users\alperen.saricayir\Desktop\alperenSaricayirSonHatasizProjeAcunmedya\KitapProjesi-main\KitapMVC\obj\Debug\net9.0\staticwebassets.upToDateCheck.txt

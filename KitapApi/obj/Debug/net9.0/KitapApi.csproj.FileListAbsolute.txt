@@ -321,7 +321,6 @@ C:\Users\alperen.saricayir\Desktop\alperenSaricayirSonHatasizProjeAcunmedya\Kita
 C:\Users\alperen.saricayir\Desktop\alperenSaricayirSonHatasizProjeAcunmedya\KitapProjesi-main\KitapApi\obj\Debug\net9.0\KitapApi.csproj.CoreCompileInputs.cache
 C:\Users\alperen.saricayir\Desktop\alperenSaricayirSonHatasizProjeAcunmedya\KitapProjesi-main\KitapApi\obj\Debug\net9.0\KitapApi.MvcApplicationPartsAssemblyInfo.cs
 C:\Users\alperen.saricayir\Desktop\alperenSaricayirSonHatasizProjeAcunmedya\KitapProjesi-main\KitapApi\obj\Debug\net9.0\KitapApi.MvcApplicationPartsAssemblyInfo.cache
-C:\Users\alperen.saricayir\Desktop\alperenSaricayirSonHatasizProjeAcunmedya\KitapProjesi-main\KitapApi\obj\Debug\net9.0\KitapApi.sourcelink.json
 C:\Users\alperen.saricayir\Desktop\alperenSaricayirSonHatasizProjeAcunmedya\KitapProjesi-main\KitapApi\obj\Debug\net9.0\rjimswa.dswa.cache.json
 C:\Users\alperen.saricayir\Desktop\alperenSaricayirSonHatasizProjeAcunmedya\KitapProjesi-main\KitapApi\obj\Debug\net9.0\rjsmrazor.dswa.cache.json
 C:\Users\alperen.saricayir\Desktop\alperenSaricayirSonHatasizProjeAcunmedya\KitapProjesi-main\KitapApi\obj\Debug\net9.0\rjsmcshtml.dswa.cache.json
@@ -336,3 +335,4 @@ C:\Users\alperen.saricayir\Desktop\alperenSaricayirSonHatasizProjeAcunmedya\Kita
 C:\Users\alperen.saricayir\Desktop\alperenSaricayirSonHatasizProjeAcunmedya\KitapProjesi-main\KitapApi\obj\Debug\net9.0\KitapApi.pdb
 C:\Users\alperen.saricayir\Desktop\alperenSaricayirSonHatasizProjeAcunmedya\KitapProjesi-main\KitapApi\obj\Debug\net9.0\KitapApi.genruntimeconfig.cache
 C:\Users\alperen.saricayir\Desktop\alperenSaricayirSonHatasizProjeAcunmedya\KitapProjesi-main\KitapApi\obj\Debug\net9.0\ref\KitapApi.dll
+C:\Users\alperen.saricayir\Desktop\alperenSaricayirSonHatasizProjeAcunmedya\KitapProjesi-main\KitapApi\obj\Debug\net9.0\staticwebassets.upToDateCheck.txt
